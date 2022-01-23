@@ -5,10 +5,8 @@ from django.shortcuts import render
 
 from . import util
 
-class NewPageTitleForm(forms.Form):
+class NewPageForm(forms.Form):
     pagetitle = forms.CharField(max_length=50, label="")
-
-class NewPageContentForm(forms.Form):
     pagecontent = forms.CharField(max_length=9000, label="", widget=forms.Textarea)
 
 
@@ -24,20 +22,17 @@ def page(request, pagetitle):
 
 def create(request):
     if request.method == "POST":
-        formtitle = NewPageTitleForm(request.POST)
-        formcontent = NewPageContentForm(request.POST)
-        if formtitle.is_valid() and formcontent.is_valid():
-            title = formtitle.cleaned_data["pagetitle"]
-            content = formcontent.cleaned_data["pagecontent"]
+        form = NewPageForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["pagetitle"]
+            content = form.cleaned_data["pagecontent"]
             return HttpResponseRedirect(reverse("encyclopedia:index"), {
                 "save": util.save_entry(title, content)
             })
         else:
             return render(request, "encyclopedia/create.html", {
-                "formtitle": formtitle,
-                "formcontent": formcontent
+                "form": form
             })
     return render(request, "encyclopedia/create.html", {
-        "title": NewPageTitleForm(),
-        "content": NewPageContentForm()
+        "form": NewPageForm(),
     })

@@ -8,9 +8,10 @@
     <h1>Add Page</h1>
     <form action="{% url 'encyclopedia:create' %}" method="post">
         {% csrf_token %}
-        <h6>Article name: {{ formtitle }}<h6/> <br>
+        <h6>Article name: <br></h6>
+        {{ form.pagetitle }} <br>
         <h6>Article content: </h6>
-        {{ formcontent }} <br>
+        {{ form.pagecontent }} <br>
         <input type="submit" value="Add">
     </form>
 {% endblock %}
