@@ -17,6 +17,10 @@ textarea {
     width: 80%;
 }
 
+pre {
+    font-family: Courier New, serif;
+}
+
 .main {
     padding: 10px;
 }

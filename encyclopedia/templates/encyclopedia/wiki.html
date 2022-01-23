@@ -1,14 +1,17 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    {{ pagetitle }}
+    {{ title }}
 {% endblock %}
 
 {% block body %}
-    <h1> {{ pagetitle }} </h1>
+    <div>
+        <h1> {{ title }} </h1>
 
-    <label>
-        {{ pagecontent }}
-    </label>
-
+        <article>
+            <pre>
+                {{ article }}
+            </pre>
+        </article>
+    </div>
 {% endblock %}

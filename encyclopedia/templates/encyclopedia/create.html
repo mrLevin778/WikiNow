@@ -1,17 +1,19 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    Encyclopedia - Add Article
 {% endblock %}
 
 {% block body %}
     <h1>Add Page</h1>
     <form action="{% url 'encyclopedia:create' %}" method="post">
         {% csrf_token %}
-        <h6>Article name: <br></h6>
-        {{ form.pagetitle }} <br>
-        <h6>Article content: </h6>
-        {{ form.pagecontent }} <br>
+        <table>
+            <h6>Article name: </h6>
+            {{ form.pagetitle }}
+            <h6>Article content: </h6>
+            {{ form.pagecontent }}
+        </table>
         <input type="submit" value="Add">
     </form>
 {% endblock %}
