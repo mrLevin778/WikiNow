@@ -16,22 +16,25 @@ def search_page(request):
     if request.method == "GET":
         query = request.GET.get("query")
         lst_entr = util.list_entries()
+        matches = []
         for i in lst_entr:
-            if i == query:
-                return render(request, "encyclopedia/wiki.html", {
-                    "title": query,
-                    "article": util.get_entry(i)
-                 })
-                break
-            else:
-                return render(request, "encyclopedia/wiki.html", {
-                    "title": query,
-                    "article": "This article is not exist!"
+            if query in i.lower():
+                matches.append(i)
+                return render(request, "encyclopedia/index.html", {
+                    "tab_title": "Search",
+                    "title": "Matches for " + query,
+                    "entries": matches
                 })
-                break
+        else:
+            return render(request, "encyclopedia/wiki.html", {
+                "title": query,
+                "article": "Article with name " + query + " is not exist!"
+            })
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
+        "tab_title": "Encyclopedia",
+        "title": "All pages",
         "entries": util.list_entries()
     })
 

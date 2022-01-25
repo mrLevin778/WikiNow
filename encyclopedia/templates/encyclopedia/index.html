@@ -1,12 +1,12 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    {{ tab_title }}
 {% endblock %}
 
 {% block body %}
-    <h1>All pages</h1>
-
+    <h1>{{ title }}</h1>
+    <div class="border-bottom"></div>
     <ul>
         {% for entry in entries %}
             <li>
