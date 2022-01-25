@@ -2,6 +2,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+import markdown2
 
 from . import util
 
@@ -11,43 +12,44 @@ class NewPageForm(forms.Form):
     pagecontent = forms.CharField(max_length=9000, label="Article content: ", widget=forms.Textarea)
 
 
-class SearchForm(forms.Form):
-    search = forms.CharField(max_length=50, label="Search Encyclopedia")
-
-
 def search_page(request):
-    if request.method == "POST":
-        searchform = SearchForm(request.POST)
-        if searchform.is_valid():
-            title = searchform.cleaned_data["search"]
-            return HttpResponseRedirect("encyclopedia/wiki.html", {
-                "article": util.get_entry(title)
-            })
-        else:
-            return HttpResponse("Not Found!")
-    return render(request, "encyclopedia/create.html", {
-        "searchform": SearchForm(),
-    })
-
+    if request.method == "GET":
+        query = request.GET.get("query")
+        lst_entr = util.list_entries()
+        for i in lst_entr:
+            if i == query:
+                return render(request, "encyclopedia/wiki.html", {
+                    "title": query,
+                    "article": util.get_entry(i)
+                 })
+                break
+            else:
+                return render(request, "encyclopedia/wiki.html", {
+                    "title": query,
+                    "article": "This article is not exist!"
+                })
+                break
 
 def index(request):
-
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
-
     })
 
 
 def article(request, title):
     return render(request, "encyclopedia/wiki.html", {
-        "article": util.get_entry(title),
+        "article": markdown2.markdown(util.get_entry(title)),
         "title": title
     })
 
 
 def randompage(request):
-
-    return render(request, "encyclopedia/wiki.html")
+    lenght = len(util.list_entries())
+    r_entry, title = util.random_entry(lenght)
+    return render(request, "encyclopedia/wiki.html", {
+        "article": r_entry,
+        "title": title
+    })
 
 
 def create(request):
@@ -56,6 +58,11 @@ def create(request):
         if form.is_valid():
             title = form.cleaned_data["pagetitle"]
             content = form.cleaned_data["pagecontent"]
+            for a in util.list_entries():
+                if a == title:
+                    return render(request, "encyclopedia/create.html", {
+                        "form": form
+                    })
             return HttpResponseRedirect(reverse("encyclopedia:index"), {
                 "save": util.save_entry(title, content)
             })

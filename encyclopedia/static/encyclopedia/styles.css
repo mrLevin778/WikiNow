@@ -18,7 +18,13 @@ textarea {
 }
 
 pre {
-    font-family: Courier New, serif;
+    font-family: Lucida Console, serif;
+    font-size: 18px;
+    width: auto;
+}
+
+article {
+    max-width: 100%;
 }
 
 .main {
@@ -39,4 +45,9 @@ pre {
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+.row-flex {
+    display: flex;
+    flex-flow: row wrap;
 }

@@ -1,5 +1,6 @@
+import random
 import re
-
+import markdown2
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
@@ -9,8 +10,9 @@ def list_entries():
     Returns a list of all names of encyclopedia entries.
     """
     _, filenames = default_storage.listdir("entries")
-    return list(sorted(re.sub(r"\.md$", "", filename)
+    entr = list(sorted(re.sub(r"\.md$", "", filename)
                 for filename in filenames if filename.endswith(".md")))
+    return entr
 
 
 def save_entry(title, content):
@@ -32,6 +34,17 @@ def get_entry(title):
     """
     try:
         f = default_storage.open(f"entries/{title}.md")
-        return f.read().decode("utf-8")
+        md = f.read().decode("utf-8")
+        return md
     except FileNotFoundError:
-        return None
+        return "This page is not exist!"
+
+
+def random_entry(entries_lenght):
+    random_index = int(random.randint(0, entries_lenght -1))
+    title = list_entries()[random_index]
+    r_entry = markdown2.markdown(get_entry(title))
+    return r_entry, title
+
+
+

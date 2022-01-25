@@ -10,14 +10,13 @@
     </head>
     <body>
         <div class="row">
-            <div class="sidebar col-lg-2 col-md-3">
+            <div class="sidebar col-lg-2 col-md-3 row-flex">
                 <h2>WikiNow</h2>
-                <form action="{% url 'encyclopedia:search' %}" method="post">
+                <form action="{% url 'encyclopedia:search' %}" method="get">
                     {% csrf_token %}
                     <table>
-                        FORMMMMM
+                        <input id="search" name="query" type="text" class="form-control" placeholder="Search" aria-label="Search">
                     </table>
-                    <input type="submit" value="Search">
                 </form>
                 <div>
                     <a href="{% url 'encyclopedia:index' %}">Home</a>

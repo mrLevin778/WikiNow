@@ -7,10 +7,10 @@
 {% block body %}
     <div>
         <h1> {{ title }} </h1>
-
+        <div class="border-bottom"></div>
         <article>
             <pre>
-                {{ article }}
+                {{ article|safe }}
             </pre>
         </article>
     </div>
