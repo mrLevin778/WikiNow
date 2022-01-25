@@ -18,7 +18,7 @@ def search_page(request):
         lst_entr = util.list_entries()
         matches = []
         for i in lst_entr:
-            if query in i.lower():
+            if query in i.lower() or query in i:
                 matches.append(i)
                 return render(request, "encyclopedia/index.html", {
                     "tab_title": "Search",
@@ -30,6 +30,7 @@ def search_page(request):
                 "title": query,
                 "article": "Article with name " + query + " is not exist!"
             })
+
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
