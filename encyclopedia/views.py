@@ -1,6 +1,6 @@
 from django import forms
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 import markdown2
 
@@ -17,22 +17,36 @@ def search_page(request):
         query = request.GET.get("query")
         lst_entr = util.list_entries()
         matches = []
-        for i in lst_entr:
-            if query in i.lower() or query in i:
-                matches.append(i)
-                return render(request, "encyclopedia/index.html", {
-                    "tab_title": "Search",
-                    "title": "Matches for " + query,
-                    "entries": matches
+        while len(lst_entr) != 0:
+            for i in lst_entr:
+                if query == i or query == i.lower():
+                    return render(request, "encyclopedia/wiki.html", {
+                        "title": query,
+                        "article": markdown2.markdown(util.get_entry(i))
+                    })
+                if query in i.lower() or query in i:
+                    matches.append(i)
+                    lst_entr.remove(i)
+                    for a in lst_entr:
+                        if a not in matches and query in a.lower():
+                            matches.append(a)
+                    print(matches)
+                    print(lst_entr)
+                    print(i)
+                    return render(request, "encyclopedia/index.html", {
+                        "tab_title": "Search",
+                        "title": "Matches for " + query,
+                        "entries": matches
+                    })
+            else:
+                return render(request, "encyclopedia/wiki.html", {
+                    "title": query,
+                    "article": "Article with name " + query + " is not exist!"
                 })
-        else:
-            return render(request, "encyclopedia/wiki.html", {
-                "title": query,
-                "article": "Article with name " + query + " is not exist!"
-            })
 
 
 def index(request):
+    print(util.list_entries())
     return render(request, "encyclopedia/index.html", {
         "tab_title": "Encyclopedia",
         "title": "All pages",
