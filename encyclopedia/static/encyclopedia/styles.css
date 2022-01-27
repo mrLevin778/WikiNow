@@ -46,8 +46,3 @@ article {
 .sidebar h2 {
     margin-top: 5px;
 }
-
-.row-flex {
-    display: flex;
-    flex-flow: row wrap;
-}

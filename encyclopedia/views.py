@@ -50,7 +50,8 @@ def index(request):
     return render(request, "encyclopedia/index.html", {
         "tab_title": "Encyclopedia",
         "title": "All pages",
-        "entries": util.list_entries()
+        "entries": util.list_entries(),
+        "wiki_path": "wiki/"
     })
 
 
